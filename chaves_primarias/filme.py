@@ -11,6 +11,7 @@ class Filme:
         self.__prox_genero = None
         self.__nacionalidade = nacionalidade
         self.__prox_nacionalidade = None
+        self.__proximo = None
 
     @property
     def nome(self):
@@ -74,3 +75,12 @@ class Filme:
     def prox_nacionalidade(self, prox_nacionalidade):
         if isinstance(prox_nacionalidade, Filme):
             self.__prox_nacionalidade = prox_nacionalidade
+
+    @property
+    def proximo(self):
+        return self.__proximo
+
+    @proximo.setter
+    def proximo(self, proximo):
+        if isinstance(proximo, Filme):
+            self.__proximo = proximo
