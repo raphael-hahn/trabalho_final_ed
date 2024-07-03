@@ -1,21 +1,22 @@
-from filme import Filme
+from chaves_primarias.filme import Filme
 
 
-class Genero:
+class Ano:
 
-    def __init__(self, genero: str, primeiro: Filme):
-        self.__genero = genero
+    def __init__(self, ano: int, primeiro: Filme):
+        self.__ano = ano
         self.__primeiro = primeiro
         self.__quantidade = 1
+        self.__prox_ano = None
 
     @property
-    def genero(self):
-        return self.__genero
+    def ano(self):
+        return self.__ano
 
-    @genero.setter
-    def genero(self, genero: str):
-        if isinstance(genero, str):
-            self.__genero = genero
+    @ano.setter
+    def ano(self, ano: int):
+        if isinstance(ano, int):
+            self.__ano = ano
 
     @property
     def primeiro(self):
@@ -34,3 +35,12 @@ class Genero:
     def quantidade(self, quantidade: int):
         if isinstance(quantidade, int):
             self.__quantidade += quantidade
+
+    @property
+    def prox_ano(self):
+        return self.__prox_ano
+
+    @prox_ano.setter
+    def prox_ano(self, prox_ano):
+        if isinstance(prox_ano, Ano):
+            self.__prox_ano = prox_ano

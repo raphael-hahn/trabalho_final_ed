@@ -1,4 +1,4 @@
-from filme import Filme
+from chaves_primarias.filme import Filme
 
 
 class Nacionalidade:
@@ -7,6 +7,7 @@ class Nacionalidade:
         self.__nacionalidade = nacionalidade
         self.__primeiro = primeiro
         self.__quantidade = 1
+        self.__prox_nacionalidade = None
 
     @property
     def nacionalidade(self):
@@ -34,3 +35,12 @@ class Nacionalidade:
     def quantidade(self, quantidade: int):
         if isinstance(quantidade, int):
             self.__quantidade += quantidade
+
+    @property
+    def prox_nacionalidade(self):
+        return self.__prox_nacionalidade
+
+    @prox_nacionalidade.setter
+    def prox_nacionalidade(self, prox_nacionalidade):
+        if isinstance(prox_nacionalidade, Nacionalidade):
+            self.__prox_nacionalidade = prox_nacionalidade
