@@ -28,6 +28,7 @@ class ControladorGeral:
         self.adiciona_lista_ano(filme)
         self.adiciona_lista_genero(filme)
         self.adiciona_lista_nacionalidade(filme)
+        return
 
     #### ESSE MÉTODO ADICIONA NOVOS ELEMENTOS NO FINAL DA LISTA (AQUI SE TRATA DA LISTA GERAL, DE TODOS OS ELEMENTOS)
     def adiciona_lista_geral(self, filme: Filme):
@@ -416,23 +417,102 @@ class ControladorGeral:
                 lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
             return
 
-##### TESTES
+    def menu_opcoes(self):
+        while True:
+            opcao = self.tela.menu_opcoes()
+            if opcao == 1:
+                self.menu_busca_chave_unica()
+            if opcao == 2:
+                self.menu_busca_chave_dupla()
+            if opcao == 3:
+                self.adiciona_elemento()
+            if opcao == 4:
+                self.remove_elemento_menu()
+            if opcao == 5:
+                self.mostra_dados_geral()
+            if opcao == 6:
+                return
 
-teste = ControladorGeral()
+    def menu_busca_chave_unica(self):
+        chave = self.tela.escolhe_chave()
+        if chave == 1:
+            self.mostra_dados_ano()
+        if chave == 2:
+            self.mostra_dados_genero()
+        if chave == 3:
+            self.mostra_dados_nacionalidade()
+        return
 
-teste.adiciona_elemento_complementar('Star Wars', 1983, 'Sci-Fi', 'USA')
-teste.adiciona_elemento_complementar('Harry Potter', 2011, 'Fantasia', 'USA')
-teste.adiciona_elemento_complementar('Cidade de Deus', 2002, 'Drama', 'Brasil')
-teste.adiciona_elemento_complementar('O Menino e a Garça', 2024, 'Aventura', 'Japão')
-teste.adiciona_elemento_complementar('Ford vs Ferrari', 2019, 'Drama', 'USA')
-teste.adiciona_elemento_complementar('Parasita', 2019, 'Drama', 'Coreia do Sul')
+    def menu_busca_chave_dupla(self):
+        chave1, chave2 = self.tela.escolhe_chave_dupla()
+        if (chave1 == 1 and chave2 == 2) or (chave2 == 1 and chave1 == 2):
+            self.busca_ano_genero()
+        if (chave1 == 1 and chave2 == 2) or (chave2 == 1 and chave1 == 2):
+            self.busca_ano_genero()
+        if (chave1 == 1 and chave2 == 3) or (chave2 == 1 and chave1 == 3):
+            self.busca_ano_nacionalidade()
+        if (chave1 == 2 and chave2 == 3) or (chave2 == 2 and chave1 == 3):
+            self.busca_genero_nacionalidade()
+        return
 
-
-#teste.remove_elemento_menu()
-teste.mostra_dados_geral()
-#teste.mostra_dados_ano()
-#teste.mostra_dados_genero()
-#teste.mostra_dados_nacionalidade()
-
-#teste.busca_ano_genero()
-teste.busca_ano_nacionalidade()
+    #### CRIA VÁRIAS INSTÂNCIAS PRÉVIAS PARA FACILITAR A CORREÇÃO DO CÓDIGO
+    def inicializa_elementos(self):
+        self.adiciona_elemento_complementar('Star Wars', 1977, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('Harry Potter', 2011, 'Fantasia', 'USA')
+        self.adiciona_elemento_complementar('Cidade de Deus', 2002, 'Drama', 'Brasil')
+        self.adiciona_elemento_complementar('O Menino e a Garça', 2024, 'Aventura', 'Japão')
+        self.adiciona_elemento_complementar('Ford vs Ferrari', 2019, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Parasita', 2019, 'Drama', 'Coreia do Sul')
+        self.adiciona_elemento_complementar('Inception', 2010, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('O Senhor dos Anéis', 2003, 'Fantasia', 'Nova Zelândia')
+        self.adiciona_elemento_complementar('Pantera Negra', 2018, 'Ação', 'USA')
+        self.adiciona_elemento_complementar('Coringa', 2019, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Vingadores: Ultimato', 2019, 'Ação', 'USA')
+        self.adiciona_elemento_complementar('A Viagem de Chihiro', 2001, 'Fantasia', 'Japão')
+        self.adiciona_elemento_complementar('A Vida é Bela', 1997, 'Drama', 'Itália')
+        self.adiciona_elemento_complementar('O Labirinto do Fauno', 2006, 'Fantasia', 'México')
+        self.adiciona_elemento_complementar('Interstellar', 2014, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('A Origem dos Guardiões', 2012, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Cisne Negro', 2010, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('A Rede Social', 2010, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Bacurau', 2019, 'Drama', 'Brasil')
+        self.adiciona_elemento_complementar('Tropa de Elite', 2007, 'Ação', 'Brasil')
+        self.adiciona_elemento_complementar('Matrix', 1999, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('Gladiador', 2000, 'Ação', 'USA')
+        self.adiciona_elemento_complementar('Pulp Fiction', 1994, 'Crime', 'USA')
+        self.adiciona_elemento_complementar('O Poderoso Chefão', 1972, 'Crime', 'USA')
+        self.adiciona_elemento_complementar('O Cavaleiro das Trevas', 2008, 'Ação', 'USA')
+        self.adiciona_elemento_complementar('Forrest Gump', 1994, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Clube da Luta', 1999, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('O Rei Leão', 1994, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Titanic', 1997, 'Romance', 'USA')
+        self.adiciona_elemento_complementar('Avatar', 2009, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('Jurassic Park', 1993, 'Aventura', 'USA')
+        self.adiciona_elemento_complementar('Star Wars: O Despertar da Força', 2015, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('Os Incríveis', 2004, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Toy Story', 1995, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Coco', 2017, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Viva - A Vida é uma Festa', 2017, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Homem-Aranha: No Aranhaverso', 2018, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('O Silêncio dos Inocentes', 1991, 'Thriller', 'USA')
+        self.adiciona_elemento_complementar('Django Livre', 2012, 'Western', 'USA')
+        self.adiciona_elemento_complementar('O Grande Hotel Budapeste', 2014, 'Comédia', 'USA')
+        self.adiciona_elemento_complementar('A Bela e a Fera', 1991, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Moana', 2016, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Valente', 2012, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('Divertida Mente', 2015, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('WALL-E', 2008, 'Animação', 'USA')
+        self.adiciona_elemento_complementar('O Fabuloso Destino de Amélie Poulain', 2001, 'Romance', 'França')
+        self.adiciona_elemento_complementar('Whiplash', 2014, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('La La Land', 2016, 'Musical', 'USA')
+        self.adiciona_elemento_complementar('Cidadão Kane', 1941, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Casablanca', 1942, 'Romance', 'USA')
+        self.adiciona_elemento_complementar('12 Anos de Escravidão', 2013, 'Drama', 'USA')
+        self.adiciona_elemento_complementar('Guerra nas Estrelas', 1977, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('O Exorcista', 1973, 'Horror', 'USA')
+        self.adiciona_elemento_complementar('E.T. - O Extraterrestre', 1982, 'Sci-Fi', 'USA')
+        self.adiciona_elemento_complementar('Duro de Matar', 1988, 'Ação', 'USA')
+        self.adiciona_elemento_complementar('Indiana Jones e os Caçadores da Arca Perdida', 1981, 'Aventura', 'USA')
+        self.adiciona_elemento_complementar('De Volta para o Futuro', 1985, 'Sci-Fi', 'USA')
+        self.menu_opcoes()
+        return

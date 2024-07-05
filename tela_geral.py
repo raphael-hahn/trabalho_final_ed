@@ -46,3 +46,57 @@ class TelaGeral:
     def remove_elemento(self):
         nome = input("Digite o nome do filme que deseja excluir: ")
         return nome
+
+    def menu_opcoes(self):
+        print(10*'-=', 'Menu de opções', 10*'-=')
+        print('1 - Buscar filme com uma chave secundária')
+        print('2 - Buscar filme com duas chaves secundárias')
+        print('3 - Incluir novo filme')
+        print('4 - Excluir filme')
+        print('5 - Busca geral')
+        print('6 - Interromper a aplicação')
+        while True:
+            try:
+                opcao = int(input("Digite a opção de sua escolha: "))
+                if opcao not in range(1,7):
+                    raise ValueError
+                return opcao
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número que represente uma das opções.")
+
+    def escolhe_chave(self):
+        print(10*'-=', 'Menu de opções', 10*'-=')
+        print('1 - Buscar filmes a partir do ano de lançamento')
+        print('2 - Buscar filmes a partir do seu gênero')
+        print('3 - Buscar filmes a partir da sua nacionalidade')
+        while True:
+            try:
+                opcao = int(input("Digite a opção de sua escolha: "))
+                if opcao not in range(1,4):
+                    raise ValueError
+                return opcao
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número que represente uma das opções.")
+
+    def escolhe_chave_dupla(self):
+        print(10*'-=', 'Menu de opções', 10*'-=')
+        print('1 - Buscar filmes a partir do ano de lançamento')
+        print('2 - Buscar filmes a partir do seu gênero')
+        print('3 - Buscar filmes a partir da sua nacionalidade')
+        while True:
+            try:
+                opcao1 = int(input("Digite a primeira chave de sua escolha: "))
+                if opcao1 not in range(1,4):
+                    raise ValueError
+                break
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número que represente uma das opções.")
+        while True:
+            try:
+                opcao2 = int(input("Digite a segunda chave de sua escolha: "))
+                if opcao2 not in range(1,4) or opcao2 == opcao1:
+                    raise ValueError
+                break
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número que represente uma das opções e que não tenha sido escolhido anteriormente.")
+        return opcao1, opcao2
