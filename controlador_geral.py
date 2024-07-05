@@ -59,7 +59,7 @@ class ControladorGeral:
         while lista_filmes_ano.prox_ano:
             lista_filmes_ano = lista_filmes_ano.prox_ano
         lista_filmes_ano.prox_ano = filme
-        lista_ano.quantidade += 1
+        lista_ano.quantidade = 1
 
     #### OS PRÓXIMOS DOIS MÉTODOS ADICIONAM NOVOS VALORES NO DIRETÓRIO DE "Gênero"
     def adiciona_lista_genero(self, filme: Filme):
@@ -81,7 +81,7 @@ class ControladorGeral:
         while lista_filmes_genero.prox_genero:
             lista_filmes_genero = lista_filmes_genero.prox_genero
         lista_filmes_genero.prox_genero = filme
-        lista_genero.quantidade += 1
+        lista_genero.quantidade = 1
 
     #### OS PRÓXIMOS DOIS MÉTODOS ADICIONAM NOVOS VALORES NO DIRETÓRIO DE "Nacionalidade"
     def adiciona_lista_nacionalidade(self, filme: Filme):
@@ -103,7 +103,7 @@ class ControladorGeral:
         while lista_filmes_nacionalidade.prox_nacionalidade:
             lista_filmes_nacionalidade = lista_filmes_nacionalidade.prox_nacionalidade
         lista_filmes_nacionalidade.prox_nacionalidade = filme
-        lista_nacionalidade.quantidade += 1
+        lista_nacionalidade.quantidade = 1
 
     #### MOSTRA TODOS OS ELEMENTOS DA LISTA
     def mostra_dados_geral(self):
@@ -228,6 +228,7 @@ class ControladorGeral:
         lista_chave = self.multilista.primeiro_ano
         while lista_chave:
             if lista_chave.ano == ano:
+                lista_chave.quantidade = -1
                 lista_ano = lista_chave.primeiro
                 if nome == lista_ano.nome:
                     if lista_ano.prox_ano != None:
@@ -249,6 +250,7 @@ class ControladorGeral:
         lista_chave = self.multilista.primeiro_genero
         while lista_chave:
             if lista_chave.genero == genero:
+                lista_chave.quantidade = -1
                 lista_genero = lista_chave.primeiro
                 if nome == lista_genero.nome:
                     if lista_genero.prox_genero != None:
@@ -270,6 +272,7 @@ class ControladorGeral:
         lista_chave = self.multilista.primeiro_nacionalidade
         while lista_chave:
             if lista_chave.nacionalidade == nacionalidade:
+                lista_chave.quantidade = -1
                 lista_nacionalidade = lista_chave.primeiro
                 if nome == lista_nacionalidade.nome:
                     if lista_nacionalidade.prox_nacionalidade != None:
@@ -287,22 +290,149 @@ class ControladorGeral:
                     lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
             lista_chave = lista_chave.prox_nacionalidade
 
+    #### FAZ BUSCA COMPOSTA DE ANO COM GÊNERO
+    def busca_ano_genero(self):
+        ano = self.tela.insere_ano()
+        lista_chave_ano = self.multilista.primeiro_ano
+        while lista_chave_ano:
+            if lista_chave_ano.ano == ano:
+                lista_ano = lista_chave_ano.primeiro
+                quantidade_ano = lista_chave_ano.quantidade
+                break
+            lista_chave_ano = lista_chave_ano.prox_ano
+            if lista_chave_ano is None: #### PARA E EXECUÇÃO CASO A CHAVE SECUNDÁRIA PASSADA NÃO EXISTA
+                self.tela.valor_nao_existente()
+                return
+
+        genero = self.tela.insere_genero()
+        lista_chave_genero = self.multilista.primeiro_genero
+        while lista_chave_genero:
+            if lista_chave_genero.genero == genero:
+                lista_genero = lista_chave_genero.primeiro
+                quantidade_genero = lista_chave_genero.quantidade
+                break
+            lista_chave_genero = lista_chave_genero.prox_genero
+            if lista_chave_genero is None:
+                self.tela.valor_nao_existente()
+                return
+
+        if quantidade_ano <= quantidade_genero:
+            while lista_ano:
+                if lista_ano.genero == genero:
+                    self.tela.mostra_filmes(lista_ano.nome, lista_ano.ano,
+                                            lista_ano.genero, lista_ano.nacionalidade)
+                lista_ano = lista_ano.prox_ano
+            return
+
+        if quantidade_genero <= quantidade_ano:
+            while lista_genero:
+                if lista_genero.ano == ano:
+                    self.tela.mostra_filmes(lista_genero.nome, lista_genero.ano,
+                                            lista_genero.genero, lista_genero.nacionalidade)
+                lista_genero = lista_genero.prox_genero
+            return
+
+    #### FAZ BUSCA COMPOSTA DE ANO COM NACIONALIDADE
+    def busca_ano_nacionalidade(self):
+        ano = self.tela.insere_ano()
+        lista_chave_ano = self.multilista.primeiro_ano
+        while lista_chave_ano:
+            if lista_chave_ano.ano == ano:
+                lista_ano = lista_chave_ano.primeiro
+                quantidade_ano = lista_chave_ano.quantidade
+                break
+            lista_chave_ano = lista_chave_ano.prox_ano
+            if lista_chave_ano is None:
+                self.tela.valor_nao_existente()
+                return
+
+        nacionalidade = self.tela.insere_nacionalidade()
+        lista_chave_nacionalidade = self.multilista.primeiro_nacionalidade
+        while lista_chave_nacionalidade:
+            if lista_chave_nacionalidade.nacionalidade == nacionalidade:
+                lista_nacionalidade = lista_chave_nacionalidade.primeiro
+                quantidade_nacionalidade = lista_chave_nacionalidade.quantidade
+                break
+            lista_chave_nacionalidade = lista_chave_nacionalidade.prox_nacionalidade
+            if lista_chave_nacionalidade is None:
+                self.tela.valor_nao_existente()
+                return
+
+        if quantidade_ano <= quantidade_nacionalidade:
+            while lista_ano: #### AQUI PODE DAR PROBLEMA SE TIVER SÓ UM ELEMENTO
+                if lista_ano.nacionalidade == nacionalidade:
+                    self.tela.mostra_filmes(lista_ano.nome, lista_ano.ano,
+                                            lista_ano.genero, lista_ano.nacionalidade)
+                lista_ano = lista_ano.prox_ano
+            return
+
+        if quantidade_nacionalidade <= quantidade_ano:
+            while lista_nacionalidade: #### AQUI PODE DAR PROBLEMA SE TIVER SÓ UM ELEMENTO
+                if lista_nacionalidade.ano == ano:
+                    self.tela.mostra_filmes(lista_nacionalidade.nome, lista_nacionalidade.ano,
+                                            lista_nacionalidade.genero, lista_nacionalidade.nacionalidade)
+                lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
+            return
+
+    #### FAZ BUSCA COMPOSTA DE GÊNERO COM NACIONALIDADE
+    def busca_genero_nacionalidade(self):
+        genero = self.tela.insere_genero()
+        lista_chave_genero = self.multilista.primeiro_genero
+        while lista_chave_genero:
+            if lista_chave_genero.genero == genero:
+                lista_genero = lista_chave_genero.primeiro
+                quantidade_genero = lista_chave_genero.quantidade
+                break
+            lista_chave_genero = lista_chave_genero.prox_genero
+            if lista_chave_genero is None:
+                self.tela.valor_nao_existente()
+                return
+
+        nacionalidade = self.tela.insere_nacionalidade()
+        lista_chave_nacionalidade = self.multilista.primeiro_nacionalidade
+        while lista_chave_nacionalidade:
+            if lista_chave_nacionalidade.nacionalidade == nacionalidade:
+                lista_nacionalidade = lista_chave_nacionalidade.primeiro
+                quantidade_nacionalidade = lista_chave_nacionalidade.quantidade
+                break
+            lista_chave_nacionalidade = lista_chave_nacionalidade.prox_nacionalidade
+            if lista_chave_nacionalidade is None:
+                self.tela.valor_nao_existente()
+                return
+
+        if quantidade_genero <= quantidade_nacionalidade:
+            while lista_genero: #### AQUI PODE DAR PROBLEMA SE TIVER SÓ UM ELEMENTO
+                if lista_genero.nacionalidade == nacionalidade:
+                    self.tela.mostra_filmes(lista_genero.nome, lista_genero.ano,
+                                            lista_genero.genero, lista_genero.nacionalidade)
+                lista_genero = lista_genero.prox_genero
+            return
+
+        if quantidade_nacionalidade <= quantidade_genero:
+            while lista_nacionalidade: #### AQUI PODE DAR PROBLEMA SE TIVER SÓ UM ELEMENTO
+                if lista_nacionalidade.genero == genero:
+                    self.tela.mostra_filmes(lista_nacionalidade.nome, lista_nacionalidade.ano,
+                                            lista_nacionalidade.genero, lista_nacionalidade.nacionalidade)
+                lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
+            return
+
 ##### TESTES
 
 teste = ControladorGeral()
 
 teste.adiciona_elemento_complementar('Star Wars', 1983, 'Sci-Fi', 'USA')
 teste.adiciona_elemento_complementar('Harry Potter', 2011, 'Fantasia', 'USA')
-teste.adiciona_elemento_complementar('Cidade de Deus', 1999, 'Drama', 'Brasil')
+teste.adiciona_elemento_complementar('Cidade de Deus', 2002, 'Drama', 'Brasil')
 teste.adiciona_elemento_complementar('O Menino e a Garça', 2024, 'Aventura', 'Japão')
 teste.adiciona_elemento_complementar('Ford vs Ferrari', 2019, 'Drama', 'USA')
 teste.adiciona_elemento_complementar('Parasita', 2019, 'Drama', 'Coreia do Sul')
 
+
+#teste.remove_elemento_menu()
+teste.mostra_dados_geral()
 #teste.mostra_dados_ano()
 #teste.mostra_dados_genero()
+#teste.mostra_dados_nacionalidade()
 
-teste.remove_elemento_menu()
-teste.mostra_dados_geral()
-teste.mostra_dados_ano()
-teste.mostra_dados_genero()
-teste.mostra_dados_nacionalidade()
+#teste.busca_ano_genero()
+teste.busca_ano_nacionalidade()
