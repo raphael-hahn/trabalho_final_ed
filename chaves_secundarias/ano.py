@@ -24,8 +24,7 @@ class Ano:
 
     @primeiro.setter
     def primeiro(self, primeiro: Filme):
-        if isinstance(primeiro, Filme):
-            self.__primeiro = primeiro
+        self.__primeiro = primeiro
 
     @property
     def quantidade(self):

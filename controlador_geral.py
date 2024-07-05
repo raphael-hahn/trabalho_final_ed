@@ -105,12 +105,80 @@ class ControladorGeral:
         lista_filmes_nacionalidade.prox_nacionalidade = filme
         lista_nacionalidade.quantidade += 1
 
-    def mostra_dados(self):
+    #### MOSTRA TODOS OS ELEMENTOS DA LISTA
+    def mostra_dados_geral(self):
         lista_geral = self.multilista.primeiro_geral
         while lista_geral:
             self.tela.mostra_filmes(lista_geral.nome, lista_geral.ano,
                                     lista_geral.genero, lista_geral.nacionalidade)
             lista_geral = lista_geral.proximo
+        return
+
+    #### FAZ A LÓGICA PARA ENCONTRAR OS VALORES REFERENTES A UMA CHAVE SECUNDÁRIA DE ANO
+    def mostra_dados_ano(self):
+        ano = self.tela.insere_ano()
+        lista_ano = self.multilista.primeiro_ano
+        if lista_ano == None:
+            self.tela.lista_vazia()
+            return
+        while lista_ano:
+            if lista_ano.ano == ano:
+                self.exibe_dados_ano(lista_ano.primeiro)
+                return
+            lista_ano = lista_ano.prox_ano
+        self.tela.valor_nao_existente()
+        return
+
+    #### ESSE MÉTODO ENVIA OS VALORES PARA A TELA REFERENTES À CHAVE SECUNDÁRIA DE ANO FORNECIDA PELO USUÁRIO
+    def exibe_dados_ano(self, lista_dados: Filme):
+        while lista_dados:
+            self.tela.mostra_filmes(lista_dados.nome, lista_dados.ano,
+                                    lista_dados.genero, lista_dados.nacionalidade)
+            lista_dados = lista_dados.prox_ano
+
+    #### FAZ A LÓGICA PARA ENCONTRAR OS VALORES REFERENTES A UMA CHAVE SECUNDÁRIA DE GÊNERO
+    def mostra_dados_genero(self):
+        genero = self.tela.insere_genero()
+        lista_genero = self.multilista.primeiro_genero
+        if lista_genero == None:
+            self.tela.lista_vazia()
+            return
+        while lista_genero:
+            if lista_genero.genero == genero:
+                self.exibe_dados_genero(lista_genero.primeiro)
+                return
+            lista_genero = lista_genero.prox_genero
+        self.tela.valor_nao_existente()
+        return
+
+    #### ESSE MÉTODO ENVIA OS VALORES PARA A TELA REFERENTES À CHAVE SECUNDÁRIA DE GÊNERO FORNECIDA PELO USUÁRIO
+    def exibe_dados_genero(self, lista_dados: Filme):
+        while lista_dados:
+            self.tela.mostra_filmes(lista_dados.nome, lista_dados.ano,
+                                    lista_dados.genero, lista_dados.nacionalidade)
+            lista_dados = lista_dados.prox_genero
+
+    #### FAZ A LÓGICA PARA ENCONTRAR OS VALORES REFERENTES A UMA CHAVE SECUNDÁRIA DE NACIONALIDADE
+    def mostra_dados_nacionalidade(self):
+        nacionalidade = self.tela.insere_nacionalidade()
+        lista_nacionalidade = self.multilista.primeiro_nacionalidade
+        if lista_nacionalidade == None:
+            self.tela.lista_vazia()
+            return
+        while lista_nacionalidade:
+            if lista_nacionalidade.nacionalidade == nacionalidade:
+                self.exibe_dados_nacionalidade(lista_nacionalidade.primeiro)
+                return
+            lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
+        self.tela.valor_nao_existente()
+        return
+
+    #### ESSE MÉTODO ENVIA OS VALORES PARA A TELA REFERENTES À CHAVE SECUNDÁRIA DE GÊNERO FORNECIDA PELO USUÁRIO
+    def exibe_dados_nacionalidade(self, lista_dados: Filme):
+        while lista_dados:
+            self.tela.mostra_filmes(lista_dados.nome, lista_dados.ano,
+                                    lista_dados.genero, lista_dados.nacionalidade)
+            lista_dados = lista_dados.prox_nacionalidade
 
     #### ESSE MÉTODO ESTÁ AQUI PARA MANTER OS ELEMENTOS DE TESTE JÁ ADICIONADOS_complementar
     def adiciona_elemento_complementar(self, nome: str, ano: int,
@@ -120,6 +188,104 @@ class ControladorGeral:
         self.adiciona_lista_ano(filme)
         self.adiciona_lista_genero(filme)
         self.adiciona_lista_nacionalidade(filme)
+
+    def remove_elemento_menu(self):
+        if self.multilista.primeiro_geral == None: #### VERIFICA SE A LISTA ESTÁ VAZIA, NÃO VAI MAIS SER VERIFICADO, ENTÃO O CÓDIGO PRECISA ESTAR FUNCIONANDO BEM PARA NÃO DAR PROBLEMA
+            self.tela.lista_vazia()
+            return
+        nome = self.tela.remove_elemento() #### BUSCA COM O USUÁRIO O ELEMENTO A SER REMOVIDO
+        ano, genero, nacionalidade = self.remove_elemento_geral(nome)
+        if ano == 0:
+            return
+        self.remove_elemento_ano(nome, ano)
+        self.remove_elemento_genero(nome, genero)
+        self.remove_elemento_nacionalidade(nome, nacionalidade)
+        return
+
+    def remove_elemento_geral(self, nome: str):
+        lista_geral = self.multilista.primeiro_geral
+        if nome == lista_geral.nome:
+            if lista_geral.proximo != None: #### VERIFICA SE TÊM MAIS DE UM ELEMENTO NA LISTA
+                self.multilista.primeiro_geral = lista_geral.proximo #### ATRIBUI A PRIMEIRA POSIÇÃO AO VALOR SEGUINTE DO REMOVIDO
+            else:
+                self.multilista.primeiro_geral = None #### A LISTA SÓ TINHA UM ELEMENTO E AGORA ESTÁ VAZIA
+            return lista_geral.ano, lista_geral.genero, lista_geral.nacionalidade
+        while lista_geral.proximo:
+            if nome == lista_geral.proximo.nome: #### VERIFICA SEMPRE SE O PRÓXIMO É O ELEMENTO QUE PROCURAMOS
+                ano = lista_geral.proximo.ano
+                genero = lista_geral.proximo.genero
+                nacionalidade = lista_geral.proximo.nacionalidade
+                if lista_geral.proximo.proximo is None: #### VERIFICA SE EXISTE PRÓXIMO DO PRÓXIMO
+                    lista_geral.proximo = None #### NÃO EXISTINDO, O PRÓXIMO SE TORNA "None" AO FAZER A REMOÇÃO DO ELEMENTO
+                else:
+                    lista_geral.proximo = lista_geral.proximo.proximo #### O PRÓXIMO VIRA O PRÓXIMO DO PRÓXIMO
+                return ano, genero, nacionalidade
+            lista_geral = lista_geral.proximo
+        self.tela.valor_nao_existente()
+        return 0, 0, 0 #### RETORNA "0s" PARA PARAR A EXECUÇÃO DA REMOÇÃO
+
+    def remove_elemento_ano(self, nome: str, ano: int):
+        lista_chave = self.multilista.primeiro_ano
+        while lista_chave:
+            if lista_chave.ano == ano:
+                lista_ano = lista_chave.primeiro
+                if nome == lista_ano.nome:
+                    if lista_ano.prox_ano != None:
+                        lista_chave.primeiro = lista_ano.prox_ano
+                    else:
+                        lista_chave.primeiro = None
+                    return
+                while lista_ano.prox_ano:
+                    if nome == lista_ano.prox_ano.nome:
+                        if lista_ano.prox_ano.prox_ano == None:
+                            lista_ano.prox_ano = None
+                        else:
+                            lista_ano.prox_ano = lista_ano.prox_ano.prox_ano
+                        return
+                    lista_ano = lista_ano.prox_ano
+            lista_chave = lista_chave.prox_ano
+
+    def remove_elemento_genero(self, nome: str, genero: str):
+        lista_chave = self.multilista.primeiro_genero
+        while lista_chave:
+            if lista_chave.genero == genero:
+                lista_genero = lista_chave.primeiro
+                if nome == lista_genero.nome:
+                    if lista_genero.prox_genero != None:
+                        lista_chave.primeiro = lista_genero.prox_genero
+                    else:
+                        lista_chave.primeiro = None
+                    return
+                while lista_genero.prox_genero:
+                    if nome == lista_genero.prox_genero.nome:
+                        if lista_genero.prox_genero.prox_genero == None:
+                            lista_genero.prox_genero = None
+                        else:
+                            lista_genero.prox_genero = lista_genero.prox_genero.prox_genero
+                        return
+                    lista_genero = lista_genero.prox_genero
+            lista_chave = lista_chave.prox_genero
+
+    def remove_elemento_nacionalidade(self, nome: str, nacionalidade: str):
+        lista_chave = self.multilista.primeiro_nacionalidade
+        while lista_chave:
+            if lista_chave.nacionalidade == nacionalidade:
+                lista_nacionalidade = lista_chave.primeiro
+                if nome == lista_nacionalidade.nome:
+                    if lista_nacionalidade.prox_nacionalidade != None:
+                        lista_chave.primeiro = lista_nacionalidade.prox_nacionalidade
+                    else:
+                        lista_chave.primeiro = None
+                    return
+                while lista_nacionalidade.prox_nacionalidade:
+                    if nome == lista_nacionalidade.prox_nacionalidade.nome:
+                        if lista_nacionalidade.prox_nacionalidade.prox_nacionalidade == None:
+                            lista_nacionalidade.prox_nacionalidade = None
+                        else:
+                            lista_nacionalidade.prox_nacionalidade = lista_nacionalidade.prox_nacionalidade.prox_nacionalidade
+                        return
+                    lista_nacionalidade = lista_nacionalidade.prox_nacionalidade
+            lista_chave = lista_chave.prox_nacionalidade
 
 ##### TESTES
 
@@ -132,4 +298,11 @@ teste.adiciona_elemento_complementar('O Menino e a Garça', 2024, 'Aventura', 'J
 teste.adiciona_elemento_complementar('Ford vs Ferrari', 2019, 'Drama', 'USA')
 teste.adiciona_elemento_complementar('Parasita', 2019, 'Drama', 'Coreia do Sul')
 
-teste.mostra_dados()
+#teste.mostra_dados_ano()
+#teste.mostra_dados_genero()
+
+teste.remove_elemento_menu()
+teste.mostra_dados_geral()
+teste.mostra_dados_ano()
+teste.mostra_dados_genero()
+teste.mostra_dados_nacionalidade()

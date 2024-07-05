@@ -37,8 +37,7 @@ class Filme:
 
     @prox_ano.setter
     def prox_ano(self, prox_ano):
-        if isinstance(prox_ano, Filme):
-            self.__prox_ano = prox_ano
+        self.__prox_ano = prox_ano
 
     @property
     def genero(self):
@@ -55,8 +54,7 @@ class Filme:
 
     @prox_genero.setter
     def prox_genero(self, prox_genero):
-        if isinstance(prox_genero, Filme):
-            self.__prox_genero = prox_genero
+        self.__prox_genero = prox_genero
 
     @property
     def nacionalidade(self):
@@ -73,8 +71,7 @@ class Filme:
 
     @prox_nacionalidade.setter
     def prox_nacionalidade(self, prox_nacionalidade):
-        if isinstance(prox_nacionalidade, Filme):
-            self.__prox_nacionalidade = prox_nacionalidade
+        self.__prox_nacionalidade = prox_nacionalidade
 
     @property
     def proximo(self):
@@ -82,5 +79,4 @@ class Filme:
 
     @proximo.setter
     def proximo(self, proximo):
-        if isinstance(proximo, Filme):
-            self.__proximo = proximo
+        self.__proximo = proximo
